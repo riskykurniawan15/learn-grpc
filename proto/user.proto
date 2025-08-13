@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "github.com/riskykurniawan15/learn-grpc/proto";
+
+// User service definition
+service UserService {
+  // Create a new user
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  
+  // Get user by ID
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  
+  // Get all users
+  rpc GetAllUsers(GetAllUsersRequest) returns (GetAllUsersResponse);
+  
+  // Update user
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
+  
+  // Delete user
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
+}
+
+// User message
+message User {
+  int64 id = 1;
+  string name = 2;
+  string email = 3;
+  int32 age = 4;
+  string created_at = 5;
+  string updated_at = 6;
+}
+
+// Create user request
+message CreateUserRequest {
+  string name = 1;
+  string email = 2;
+  string password = 3;
+  int32 age = 4;
+}
+
+// Create user response
+message CreateUserResponse {
+  User user = 1;
+  string message = 2;
+  bool success = 3;
+}
+
+// Get user request
+message GetUserRequest {
+  int64 id = 1;
+}
+
+// Get user response
+message GetUserResponse {
+  User user = 1;
+  string message = 2;
+  bool success = 3;
+}
+
+// Get all users request
+message GetAllUsersRequest {}
+
+// Get all users response
+message GetAllUsersResponse {
+  repeated User users = 1;
+  string message = 2;
+  bool success = 3;
+}
+
+// Update user request
+message UpdateUserRequest {
+  int64 id = 1;
+  string name = 2;
+  string email = 3;
+  string password = 4;
+  int32 age = 5;
+}
+
+// Update user response
+message UpdateUserResponse {
+  User user = 1;
+  string message = 2;
+  bool success = 3;
+}
+
+// Delete user request
+message DeleteUserRequest {
+  int64 id = 1;
+}
+
+// Delete user response
+message DeleteUserResponse {
+  string message = 2;
+  bool success = 3;
+}
+

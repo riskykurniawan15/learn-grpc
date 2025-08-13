@@ -1,0 +1,359 @@
+{
+	"info": {
+		"_postman_id": "grpc-1234-5678-9012",
+		"name": "User Service gRPC",
+		"description": "Collection untuk testing User Service gRPC langsung",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "🔐 Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "GRPC",
+						"header": [],
+						"body": {
+							"mode": "grpc",
+							"grpc": {
+								"address": "localhost:50051",
+								"protoFile": {
+									"path": "proto/user.proto",
+									"content": "syntax = \"proto3\";\n\npackage user;\n\noption go_package = \"github.com/riskykurniawan15/learn-grpc/proto\";\n\nservice UserService {\n  rpc Register(RegisterRequest) returns (RegisterResponse);\n  rpc Login(LoginRequest) returns (LoginResponse);\n  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);\n  rpc GetUser(GetUserRequest) returns (GetUserResponse);\n  rpc GetAllUsers(GetAllUsersRequest) returns (GetAllUsersResponse);\n  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);\n  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);\n}\n\nmessage RegisterRequest {\n  string username = 1;\n  string email = 2;\n  string password = 3;\n  int32 age = 4;\n}\n\nmessage RegisterResponse {\n  User user = 1;\n  string token = 2;\n  string message = 3;\n  bool success = 4;\n}\n\nmessage LoginRequest {\n  string email = 1;\n  string password = 2;\n}\n\nmessage LoginResponse {\n  User user = 1;\n  string token = 2;\n  string message = 3;\n  bool success = 4;\n}\n\nmessage User {\n  int64 id = 1;\n  string username = 2;\n  string email = 3;\n  int32 age = 4;\n  string created_at = 5;\n  string updated_at = 6;\n}\n\nmessage CreateUserRequest {\n  string username = 1;\n  string email = 2;\n  string password = 3;\n  int32 age = 4;\n}\n\nmessage CreateUserRequest {\n  string username = 1;\n  string email = 2;\n  string password = 3;\n  int32 age = 4;\n}\n\nmessage CreateUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage GetUserRequest {\n  int64 id = 1;\n}\n\nmessage GetUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage GetAllUsersRequest {}\n\nmessage GetAllUsersResponse {\n  repeated User users = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage UpdateUserRequest {\n  int64 id = 1;\n  string username = 2;\n  string email = 3;\n  int32 age = 4;\n}\n\nmessage UpdateUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage DeleteUserRequest {\n  int64 id = 1;\n}\n\nmessage DeleteUserResponse {\n  string message = 2;\n  bool success = 3;\n}"
+								},
+								"method": "Register",
+								"metadata": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"john_doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\",\n  \"age\": 30\n}"
+								}
+							}
+						},
+						"url": {
+							"raw": "grpc://localhost:50051/user.UserService/Register",
+							"protocol": "grpc",
+							"host": [
+								"localhost"
+							],
+							"port": "50051",
+							"path": [
+								"user",
+								"UserService",
+								"Register"
+							]
+						}
+					},
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Set token to environment variable if successful",
+									"if (pm.response.code === 0) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.token) {",
+									"        pm.environment.set('auth_token', response.token);",
+									"        pm.environment.set('user_id', response.user.id);",
+									"        console.log('Token saved:', response.token.substring(0, 20) + '...');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"method": "GRPC",
+						"header": [],
+						"body": {
+							"mode": "grpc",
+							"grpc": {
+								"address": "localhost:50051",
+								"protoFile": {
+									"path": "proto/user.proto",
+									"content": "syntax = \"proto3\";\n\npackage user;\n\noption go_package = \"github.com/riskykurniawan15/learn-grpc/proto\";\n\nservice UserService {\n  rpc Register(RegisterRequest) returns (RegisterResponse);\n  rpc Login(LoginRequest) returns (LoginResponse);\n  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);\n  rpc GetUser(GetUserRequest) returns (GetUserResponse);\n  rpc GetAllUsers(GetAllUsersRequest) returns (GetAllUsersResponse);\n  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);\n  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);\n}\n\nmessage RegisterRequest {\n  string username = 1;\n  string email = 2;\n  string password = 3;\n  int32 age = 4;\n}\n\nmessage RegisterResponse {\n  User user = 1;\n  string token = 2;\n  string message = 3;\n  bool success = 4;\n}\n\nmessage LoginRequest {\n  string email = 1;\n  string password = 2;\n}\n\nmessage LoginResponse {\n  User user = 1;\n  string token = 2;\n  string message = 3;\n  bool success = 4;\n}\n\nmessage User {\n  int64 id = 1;\n  string username = 2;\n  string email = 3;\n  int32 age = 4;\n  string created_at = 5;\n  string updated_at = 6;\n}\n\nmessage CreateUserRequest {\n  string username = 1;\n  string email = 2;\n  string password = 3;\n  int32 age = 4;\n}\n\nmessage CreateUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage GetUserRequest {\n  int64 id = 1;\n}\n\nmessage GetUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage GetAllUsersRequest {}\n\nmessage GetAllUsersResponse {\n  repeated User users = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage UpdateUserRequest {\n  int64 id = 1;\n  string username = 2;\n  string email = 3;\n  int32 age = 4;\n}\n\nmessage UpdateUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage DeleteUserRequest {\n  int64 id = 1;\n}\n\nmessage DeleteUserResponse {\n  string message = 2;\n  bool success = 3;\n}"
+								},
+								"method": "Login",
+								"metadata": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+								}
+							}
+						},
+						"url": {
+							"raw": "grpc://localhost:50051/user.UserService/Login",
+							"protocol": "grpc",
+							"host": [
+								"localhost"
+							],
+							"port": "50051",
+							"path": [
+								"user",
+								"UserService",
+								"Login"
+							]
+						}
+					},
+					"response": [],
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Set token to environment variable if successful",
+									"if (pm.response.code === 0) {",
+									"    const response = pm.response.json();",
+									"    if (response.success && response.token) {",
+									"        pm.environment.set('auth_token', response.token);",
+									"        pm.environment.set('user_id', response.user.id);",
+									"        console.log('Token saved:', response.token.substring(0, 20) + '...');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "�� User Management",
+			"item": [
+				{
+					"name": "Create User (Admin)",
+					"request": {
+						"method": "GRPC",
+						"header": [],
+						"body": {
+							"mode": "grpc",
+							"grpc": {
+								"address": "localhost:50051",
+								"protoFile": {
+									"path": "proto/user.proto",
+									"content": "syntax = \"proto3\";\n\npackage user;\n\noption go_package = \"github.com/riskykurniawan15/learn-grpc/proto\";\n\nservice UserService {\n  rpc Register(RegisterRequest) returns (RegisterResponse);\n  rpc Login(LoginRequest) returns (LoginResponse);\n  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);\n  rpc GetUser(GetUserRequest) returns (GetUserResponse);\n  rpc GetAllUsers(GetAllUsersRequest) returns (GetAllUsersResponse);\n  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);\n  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);\n}\n\nmessage RegisterRequest {\n  string username = 1;\n  string email = 2;\n  string password = 3;\n  int32 age = 4;\n}\n\nmessage RegisterResponse {\n  User user = 1;\n  string token = 2;\n  string message = 3;\n  bool success = 4;\n}\n\nmessage LoginRequest {\n  string email = 1;\n  string password = 2;\n}\n\nmessage LoginResponse {\n  User user = 1;\n  string token = 2;\n  string message = 3;\n  bool success = 4;\n}\n\nmessage User {\n  int64 id = 1;\n  string username = 2;\n  string email = 3;\n  int32 age = 4;\n  string created_at = 5;\n  string updated_at = 6;\n}\n\nmessage CreateUserRequest {\n  string username = 1;\n  string email = 2;\n  string password = 3;\n  int32 age = 4;\n}\n\nmessage CreateUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage GetUserRequest {\n  int64 id = 1;\n}\n\nmessage GetUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage GetAllUsersRequest {}\n\nmessage GetAllUsersResponse {\n  repeated User users = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage UpdateUserRequest {\n  int64 id = 1;\n  string username = 2;\n  string email = 3;\n  int32 age = 4;\n}\n\nmessage UpdateUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage DeleteUserRequest {\n  int64 id = 1;\n}\n\nmessage DeleteUserResponse {\n  string message = 2;\n  bool success = 3;\n}"
+								},
+								"method": "CreateUser",
+								"metadata": [
+									{
+										"key": "authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"jane_smith\",\n  \"email\": \"jane@example.com\",\n  \"password\": \"password123\",\n  \"age\": 25\n}"
+								}
+							}
+						},
+						"url": {
+							"raw": "grpc://localhost:50051/user.UserService/CreateUser",
+							"protocol": "grpc",
+							"host": [
+								"localhost"
+							],
+							"port": "50051",
+							"path": [
+								"user",
+								"UserService",
+								"CreateUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GRPC",
+						"header": [],
+						"body": {
+							"mode": "grpc",
+							"grpc": {
+								"address": "localhost:50051",
+								"protoFile": {
+									"path": "proto/user.proto",
+									"content": "syntax = \"proto3\";\n\npackage user;\n\noption go_package = \"github.com/riskykurniawan15/learn-grpc/proto\";\n\nservice UserService {\n  rpc Register(RegisterRequest) returns (RegisterResponse);\n  rpc Login(LoginRequest) returns (LoginResponse);\n  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);\n  rpc GetUser(GetUserRequest) returns (GetUserResponse);\n  rpc GetAllUsers(GetAllUsersRequest) returns (GetAllUsersResponse);\n  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);\n  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);\n}\n\nmessage RegisterRequest {\n  string username = 1;\n  string email = 2;\n  string password = 3;\n  int32 age = 4;\n}\n\nmessage RegisterResponse {\n  User user = 1;\n  string token = 2;\n  string message = 3;\n  bool success = 4;\n}\n\nmessage LoginRequest {\n  string email = 1;\n  string password = 2;\n}\n\nmessage LoginResponse {\n  User user = 1;\n  string token = 2;\n  string message = 3;\n  bool success = 4;\n}\n\nmessage User {\n  int64 id = 1;\n  string username = 2;\n  string email = 3;\n  int32 age = 4;\n  string created_at = 5;\n  string updated_at = 6;\n}\n\nmessage CreateUserRequest {\n  string username = 1;\n  string email = 2;\n  string password = 3;\n  int32 age = 4;\n}\n\nmessage CreateUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage GetUserRequest {\n  int64 id = 1;\n}\n\nmessage GetUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage GetAllUsersRequest {}\n\nmessage GetAllUsersResponse {\n  repeated User users = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage UpdateUserRequest {\n  int64 id = 1;\n  string username = 2;\n  string email = 3;\n  int32 age = 4;\n}\n\nmessage UpdateUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage DeleteUserRequest {\n  int64 id = 1;\n}\n\nmessage DeleteUserResponse {\n  string message = 2;\n  bool success = 3;\n}"
+								},
+								"method": "GetUser",
+								"metadata": [
+									{
+										"key": "authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": {{user_id}}\n}"
+								}
+							}
+						},
+						"url": {
+							"raw": "grpc://localhost:50051/user.UserService/GetUser",
+							"protocol": "grpc",
+							"host": [
+								"localhost"
+							],
+							"port": "50051",
+							"path": [
+								"user",
+								"UserService",
+								"GetUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GRPC",
+						"header": [],
+						"body": {
+							"mode": "grpc",
+							"grpc": {
+								"address": "localhost:50051",
+								"protoFile": {
+									"path": "proto/user.proto",
+									"content": "syntax = \"proto3\";\n\npackage user;\n\noption go_package = \"github.com/riskykurniawan15/learn-grpc/proto\";\n\nservice UserService {\n  rpc Register(RegisterRequest) returns (RegisterResponse);\n  rpc Login(LoginRequest) returns (LoginResponse);\n  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);\n  rpc GetUser(GetUserRequest) returns (GetUserResponse);\n  rpc GetAllUsers(GetAllUsersRequest) returns (GetAllUsersResponse);\n  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);\n  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);\n}\n\nmessage RegisterRequest {\n  string username = 1;\n  string email = 2;\n  string password = 3;\n  int32 age = 4;\n}\n\nmessage RegisterRequest {\n  string username = 1;\n  string email = 2;\n  string password = 3;\n  int32 age = 4;\n}\n\nmessage RegisterResponse {\n  User user = 1;\n  string token = 2;\n  string message = 3;\n  bool success = 4;\n}\n\nmessage LoginRequest {\n  string email = 1;\n  string password = 2;\n}\n\nmessage LoginResponse {\n  User user = 1;\n  string token = 2;\n  string message = 3;\n  bool success = 4;\n}\n\nmessage User {\n  int64 id = 1;\n  string username = 2;\n  string email = 3;\n  int32 age = 4;\n  string created_at = 5;\n  string updated_at = 6;\n}\n\nmessage CreateUserRequest {\n  string username = 1;\n  string email = 2;\n  string password = 3;\n  int32 age = 4;\n}\n\nmessage CreateUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage GetUserRequest {\n  int64 id = 1;\n}\n\nmessage GetUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage GetAllUsersRequest {}\n\nmessage GetAllUsersResponse {\n  repeated User users = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage UpdateUserRequest {\n  int64 id = 1;\n  string username = 2;\n  string email = 3;\n  int32 age = 4;\n}\n\nmessage UpdateUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage DeleteUserRequest {\n  int64 id = 1;\n}\n\nmessage DeleteUserResponse {\n  string message = 2;\n  bool success = 3;\n}"
+								},
+								"method": "GetAllUsers",
+								"metadata": [
+									{
+										"key": "authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{}"
+								}
+							}
+						},
+						"url": {
+							"raw": "grpc://localhost:50051/user.UserService/GetAllUsers",
+							"protocol": "grpc",
+							"host": [
+								"localhost"
+							],
+							"port": "50051",
+							"path": [
+								"user",
+								"UserService",
+								"GetAllUsers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "GRPC",
+						"header": [],
+						"body": {
+							"mode": "grpc",
+							"grpc": {
+								"address": "localhost:50051",
+								"protoFile": {
+									"path": "proto/user.proto",
+									"content": "syntax = \"proto3\";\n\npackage user;\n\noption go_package = \"github.com/riskykurniawan15/learn-grpc/proto\";\n\nservice UserService {\n  rpc Register(RegisterRequest) returns (RegisterResponse);\n  rpc Login(LoginRequest) returns (LoginResponse);\n  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);\n  rpc GetUser(GetUserRequest) returns (GetUserResponse);\n  rpc GetAllUsers(GetAllUsersRequest) returns (GetAllUsersResponse);\n  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);\n  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);\n}\n\nmessage RegisterRequest {\n  string username = 1;\n  string email = 2;\n  string password = 3;\n  int32 age = 4;\n}\n\nmessage RegisterResponse {\n  User user = 1;\n  string token = 2;\n  string message = 3;\n  bool success = 4;\n}\n\nmessage LoginRequest {\n  string email = 1;\n  string password = 2;\n}\n\nmessage LoginResponse {\n  User user = 1;\n  string token = 2;\n  string message = 3;\n  bool success = 4;\n}\n\nmessage User {\n  int64 id = 1;\n  string username = 2;\n  string email = 3;\n  int32 age = 4;\n  string created_at = 5;\n  string updated_at = 6;\n}\n\nmessage CreateUserRequest {\n  string username = 1;\n  string email = 2;\n  string password = 3;\n  int32 age = 4;\n}\n\nmessage CreateUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage GetUserRequest {\n  int64 id = 1;\n}\n\nmessage GetUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage GetAllUsersRequest {}\n\nmessage GetAllUsersResponse {\n  repeated User users = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage UpdateUserRequest {\n  int64 id = 1;\n  string username = 2;\n  string email = 3;\n  int32 age = 4;\n}\n\nmessage UpdateUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage DeleteUserRequest {\n  int64 id = 1;\n}\n\nmessage DeleteUserResponse {\n  string message = 2;\n  bool success = 3;\n}"
+								},
+								"method": "UpdateUser",
+								"metadata": [
+									{
+										"key": "authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": {{user_id}},\n  \"username\": \"john_doe_updated\",\n  \"age\": 31\n}"
+								}
+							}
+						},
+						"url": {
+							"raw": "grpc://localhost:50051/user.UserService/UpdateUser",
+							"protocol": "grpc",
+							"host": [
+								"localhost"
+							],
+							"port": "50051",
+							"path": [
+								"user",
+								"UserService",
+								"UpdateUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "GRPC",
+						"header": [],
+						"body": {
+							"mode": "grpc",
+							"grpc": {
+								"address": "localhost:50051",
+								"protoFile": {
+									"path": "proto/user.proto",
+									"content": "syntax = \"proto3\";\n\npackage user;\n\noption go_package = \"github.com/riskykurniawan15/learn-grpc/proto\";\n\nservice UserService {\n  rpc Register(RegisterRequest) returns (RegisterResponse);\n  rpc Login(LoginRequest) returns (LoginResponse);\n  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);\n  rpc GetUser(GetUserRequest) returns (GetUserResponse);\n  rpc GetAllUsers(GetAllUsersRequest) returns (GetAllUsersResponse);\n  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);\n  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);\n}\n\nmessage RegisterRequest {\n  string username = 1;\n  string email = 2;\n  string password = 3;\n  int32 age = 4;\n}\n\nmessage RegisterResponse {\n  User user = 1;\n  string token = 2;\n  string message = 3;\n  bool success = 4;\n}\n\nmessage LoginRequest {\n  string email = 1;\n  string password = 2;\n}\n\nmessage LoginResponse {\n  User user = 1;\n  string token = 2;\n  string message = 3;\n  bool success = 4;\n}\n\nmessage User {\n  string username = 2;\n  string email = 3;\n  int32 age = 4;\n  string created_at = 5;\n  string updated_at = 6;\n}\n\nmessage CreateUserRequest {\n  string username = 1;\n  string email = 2;\n  string password = 3;\n  int32 age = 4;\n}\n\nmessage CreateUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage GetUserRequest {\n  int64 id = 1;\n}\n\nmessage GetUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage GetAllUsersRequest {}\n\nmessage GetAllUsersResponse {\n  repeated User users = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage UpdateUserRequest {\n  int64 id = 1;\n  string username = 2;\n  string email = 3;\n  int32 age = 4;\n}\n\nmessage UpdateUserResponse {\n  User user = 1;\n  string message = 2;\n  bool success = 3;\n}\n\nmessage DeleteUserRequest {\n  int64 id = 1;\n}\n\nmessage DeleteUserResponse {\n  string message = 2;\n  bool success = 3;\n}"
+								},
+								"method": "DeleteUser",
+								"metadata": [
+									{
+										"key": "authorization",
+										"value": "Bearer {{auth_token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"id\": {{user_id}}\n}"
+								}
+							}
+						},
+						"url": {
+							"raw": "grpc://localhost:50051/user.UserService/DeleteUser",
+							"protocol": "grpc",
+							"host": [
+								"localhost"
+							],
+							"port": "50051",
+							"path": [
+								"user",
+								"UserService",
+								"DeleteUser"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "grpc://localhost:50051",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
